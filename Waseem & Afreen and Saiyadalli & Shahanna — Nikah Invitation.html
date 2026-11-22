@@ -395,6 +395,20 @@
       color: var(--muted)
     }
 
+    .cd {
+      margin: 1.2rem 0 0;
+      font-size: 1rem;
+      color: var(--muted);
+      white-space: nowrap
+    }
+
+    .cd b {
+      font-weight: 400;
+      font-size: 1.3rem;
+      color: var(--gold-hi);
+      font-variant-numeric: tabular-nums
+    }
+
     .hint {
       font-size: .95rem;
       color: var(--muted);
@@ -994,6 +1008,11 @@
       <button type="button" id="skip"
         style="margin-top:1rem;background:transparent;color:var(--muted);border:1px solid rgba(122,92,22,.35);font-size:.95rem;padding:.4rem 1.2rem" data-i18n="skip">Reveal
         without scratching</button>
+      <div id="after" hidden>
+        <p class="cd" id="cd" aria-live="off"><b id="d">00</b> <span data-i18n="cd_d">days</span> · <b id="h">00</b> <span
+            data-i18n="cd_h">hrs</span> · <b id="m">00</b> <span data-i18n="cd_m">min</span> · <b id="s">00</b> <span
+            data-i18n="cd_s">sec</span></p>
+      </div>
     </section>
 
     <section>
@@ -1054,10 +1073,6 @@
       <p class="sub" data-i18n="help_sub">Call us for travel help or venue details</p>
       <hr class="rule">
       <ul class="list">
-        <!-- <li><span><strong data-i18n="travel">Travel help</strong><small data-i18n="contact">Contact name</small></span><a class="t"
-            href="tel:+910000000000">+91 00000 00000</a></li>
-        <li><span><strong data-i18n="venue_d">Venue details</strong><small data-i18n="contact">Contact name</small></span><a class="t"
-            href="tel:+910000000000">+91 00000 00000</a></li> -->
         <li><span><strong>Yesuf Ladakhan</strong><small data-i18n="contact">Contact name</small></span><a class="t"
             href="tel:+916361128553">+91 6361128553</a></li>
       </ul>
@@ -1086,7 +1101,7 @@
 
       var box = document.getElementById('scratch'), cv = document.getElementById('foil'), ctx = cv.getContext('2d');
       window.__repaint = function () { if (!revealed) paint() };
-      var drawing = false, revealed = false, target = new Date(2027, 0, 11, 11, 0, 0);
+      var drawing = false, revealed = false, target = new Date('2027-01-11T11:00:00+05:30');
 
       function paint() {
         var r = box.getBoundingClientRect(), dpr = window.devicePixelRatio || 1;
@@ -1114,6 +1129,8 @@
       function reveal() {
         if (revealed) return; revealed = true; box.classList.add('done');
         document.getElementById('skip').style.display = 'none';
+        document.getElementById('after').hidden = false;
+        tick(); setInterval(tick, 1000);
       }
       function tick() {
         var ms = Math.max(0, target - new Date()), p = function (n) { return String(n).padStart(2, '0') };
@@ -1126,6 +1143,7 @@
       cv.addEventListener('pointermove', scratch);
       cv.addEventListener('pointerup', function () { drawing = false; if (cleared() > .45) reveal() });
       document.getElementById('skip').addEventListener('click', reveal);
+
       window.addEventListener('resize', function () { if (!revealed) paint() });
       (document.fonts && document.fonts.ready ? document.fonts.ready : Promise.resolve()).then(paint);
 
@@ -1172,7 +1190,7 @@
 
   <script>
     (function () {
-      var D = {"c_sub": {"en": "Reception", "kn": "ಆರತಕ್ಷತೆ"}, "c_title": {"en": "A Beautiful Beginning", "kn": "ಸುಂದರ ಆರಂಭ"}, "c_open": {"en": "Open invitation", "kn": "ಆಮಂತ್ರಣ ತೆರೆಯಿರಿ"}, "h_sub": {"en": "Reception invitation", "kn": "ಆರತಕ್ಷತೆ ಆಮಂತ್ರಣ"}, "bl_h": {"en": "With blessings", "kn": "ಆಶೀರ್ವಾದಗಳೊಂದಿಗೆ"}, "bl_p": {"en": "In the name of Allah, the Most Gracious, the Most Merciful. We joyfully invite you to share our happiness as we celebrate our Reception.", "kn": "ಅತ್ಯಂತ ಕರುಣಾಮಯಿ, ಅತ್ಯಂತ ದಯಾಳುವಾದ ಅಲ್ಲಾಹನ ಹೆಸರಿನಲ್ಲಿ. ನಮ್ಮ ಆರತಕ್ಷತೆಯನ್ನು ಆಚರಿಸುವ ಈ ಸಂತೋಷದಲ್ಲಿ ನೀವೂ ಪಾಲ್ಗೊಳ್ಳಬೇಕೆಂದು ನಾವು ಹರ್ಷದಿಂದ ಆಹ್ವಾನಿಸುತ್ತೇವೆ."}, "day_h": {"en": "The blessed day", "kn": "ಶುಭ ದಿನ"}, "sc_sub": {"en": "Scratch the gold to reveal the date", "kn": "ದಿನಾಂಕ ತಿಳಿಯಲು ಚಿನ್ನದ ಪದರವನ್ನು ಉಜ್ಜಿರಿ"}, "date": {"en": "Monday, 11 January 2027", "kn": "ಸೋಮವಾರ, 11 ಜನವರಿ 2027"}, "time": {"en": "11:00 AM", "kn": "ಬೆಳಿಗ್ಗೆ 11:00"}, "skip": {"en": "Reveal without scratching", "kn": "ಉಜ್ಜದೆ ತೋರಿಸಿ"}, "v1": {"en": "“And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquillity with them, and He has put love and mercy between your hearts.”<b>Surah Ar-Rum 30:21</b>", "kn": "“ನೀವು ನೆಮ್ಮದಿ ಪಡೆಯುವಂತೆ ನಿಮ್ಮಿಂದಲೇ ನಿಮಗೆ ಸಂಗಾತಿಗಳನ್ನು ಸೃಷ್ಟಿಸಿದ್ದು ಮತ್ತು ನಿಮ್ಮ ಹೃದಯಗಳ ನಡುವೆ ಪ್ರೀತಿ ಹಾಗೂ ದಯೆಯನ್ನು ಇರಿಸಿದ್ದು ಅವನ ದೃಷ್ಟಾಂತಗಳಲ್ಲಿ ಒಂದಾಗಿದೆ.”<b>ಸೂರಾ ಅರ್-ರೂಮ್ 30:21</b>"}, "ven_h": {"en": "Venue", "kn": "ಸ್ಥಳ"}, "ven1": {"en": "Hanchinal", "kn": "ಹಂಚಿನಾಳ"}, "ven2": {"en": "Savadatti", "kn": "ಸವದತ್ತಿ"}, "map": {"en": "View on map", "kn": "ನಕ್ಷೆಯಲ್ಲಿ ನೋಡಿ"}, "pre_h": {"en": "Pre-wedding events", "kn": "ವಿವಾಹ ಪೂರ್ವ ಕಾರ್ಯಕ್ರಮಗಳು"}, "mehendi": {"en": "Mehendi ceremony", "kn": "ಮೆಹಂದಿ ಕಾರ್ಯಕ್ರಮ"}, "groom_res": {"en": "Groom’s residence", "kn": "ವರನ ನಿವಾಸ"}, "t_meh": {"en": "07 Jan<br>6:00 PM", "kn": "07 ಜನವರಿ<br>ಸಂಜೆ 6:00"}, "haldi": {"en": "Haldi", "kn": "ಹಳದಿ (ಹಲ್ದಿ)"}, "t_hal": {"en": "08 Jan<br>10:00 PM", "kn": "08 ಜನವರಿ<br>ರಾತ್ರಿ 10:00"}, "we_h": {"en": "Wedding events", "kn": "ವಿವಾಹ ಕಾರ್ಯಕ್ರಮಗಳು"}, "we1": {"en": "Waseem <span class=\"wd\">weds</span> Afreen", "kn": "ವಸೀಂ <span class=\"wd\">ಮತ್ತು</span> ಅಫ್ರೀನ್"}, "t_we1": {"en": "09 Jan<br>12:00 PM", "kn": "09 ಜನವರಿ<br>ಮಧ್ಯಾಹ್ನ 12:00"}, "we2": {"en": "Saiyadali <span class=\"wd\">weds</span> Shahana", "kn": "ಸೈಯದಲಿ <span class=\"wd\">ಮತ್ತು</span> ಶಹನಾ"}, "t_we2": {"en": "10 Jan<br>12:00 PM", "kn": "10 ಜನವರಿ<br>ಮಧ್ಯಾಹ್ನ 12:00"}, "pr_h": {"en": "Program on Reception", "kn": "ಆರತಕ್ಷತೆ ಕಾರ್ಯಕ್ರಮ"}, "pt1": {"en": "10:00 AM", "kn": "ಬೆಳಿಗ್ಗೆ 10:00"}, "pt2": {"en": "11:00 AM", "kn": "ಬೆಳಿಗ್ಗೆ 11:00"}, "pt3": {"en": "12:30 PM", "kn": "ಮಧ್ಯಾಹ್ನ 12:30"}, "pg1": {"en": "Guest welcome", "kn": "ಅತಿಥಿಗಳ ಸ್ವಾಗತ"}, "pg2": {"en": "Reception ceremony", "kn": "ಆರತಕ್ಷತೆ ಸಮಾರಂಭ"}, "pg3": {"en": "Dawat (Lunch)", "kn": "ದಾವತ್ (ಮಧ್ಯಾಹ್ನದ ಊಟ)"}, "rsvp_h": {"en": "Will you join us?", "kn": "ನೀವು ನಮ್ಮೊಂದಿಗೆ ಬರುವಿರಾ?"}, "rsvp_b": {"en": "Insha’Allah — attending", "kn": "ಇನ್‌ಶಾ ಅಲ್ಲಾಹ್ — ಬರುತ್ತೇನೆ"}, "help_h": {"en": "Need help?", "kn": "ಸಹಾಯ ಬೇಕೇ?"}, "help_sub": {"en": "Call us for travel help or venue details", "kn": "ಪ್ರಯಾಣ ಸಹಾಯ ಅಥವಾ ಸ್ಥಳದ ಮಾಹಿತಿಗಾಗಿ ನಮಗೆ ಕರೆ ಮಾಡಿ"}, "travel": {"en": "Travel help", "kn": "ಪ್ರಯಾಣ ಸಹಾಯ"}, "venue_d": {"en": "Venue details", "kn": "ಸ್ಥಳದ ವಿವರ"}, "contact": {"en": "Contact name", "kn": "ಸಂಪರ್ಕ ಹೆಸರು"}, "v2": {"en": "“Our Lord, grant us from among our spouses and offspring comfort to our eyes and make us an example for the righteous.”<b>Surah Al-Furqan 25:74</b>", "kn": "“ನಮ್ಮ ಪ್ರಭುವೇ, ನಮ್ಮ ಸಂಗಾತಿಗಳಿಂದಲೂ ಸಂತತಿಗಳಿಂದಲೂ ನಮಗೆ ಕಣ್ಣಿಗೆ ತಂಪನ್ನು ಕರುಣಿಸು ಮತ್ತು ನಮ್ಮನ್ನು ಭಯಭಕ್ತಿಯುಳ್ಳವರಿಗೆ ಮಾದರಿಯನ್ನಾಗಿ ಮಾಡು.”<b>ಸೂರಾ ಅಲ್-ಫುರ್ಕಾನ್ 25:74</b>"}, "f1": {"en": "Waseem <span class=\"wd\">weds</span> Afreen", "kn": "ವಸೀಂ <span class=\"wd\">ಮತ್ತು</span> ಅಫ್ರೀನ್"}, "f2": {"en": "Saiyadali <span class=\"wd\">weds</span> Shahana", "kn": "ಸೈಯದಲಿ <span class=\"wd\">ಮತ್ತು</span> ಶಹನಾ"}, "fin": {"en": "May Allah bless these unions with love, mercy and tranquillity. Ameen.", "kn": "ಅಲ್ಲಾಹನು ಈ ವಿವಾಹ ಬಂಧಗಳನ್ನು ಪ್ರೀತಿ, ಕರುಣೆ ಮತ್ತು ಶಾಂತಿಯಿಂದ ಆಶೀರ್ವದಿಸಲಿ. ಆಮೀನ್."}, "scratch_here": {"en": "Scratch here", "kn": "ಇಲ್ಲಿ ಉಜ್ಜಿ"}, "name_ph": {"en": "Your name", "kn": "ನಿಮ್ಮ ಹೆಸರು"}, "thanks": {"en": "Thank you", "kn": "ಧನ್ಯವಾದಗಳು"}, "reply": {"en": "Your reply: Insha’Allah, attending.", "kn": "ನಿಮ್ಮ ಉತ್ತರ: ಇನ್‌ಶಾ ಅಲ್ಲಾಹ್, ಬರುತ್ತೇನೆ."}, "nm1": {"en": "Waseem <span class=\"wd\">weds</span> Afreen", "kn": "ವಸೀಂ <span class=\"wd\">ಮತ್ತು</span> ಅಫ್ರೀನ್"}, "nm2": {"en": "Saiyadali <span class=\"wd\">weds</span> Shahana", "kn": "ಸೈಯದಲಿ <span class=\"wd\">ಮತ್ತು</span> ಶಹನಾ"}, "sr_h1": {"en": "Waseem weds Afreen and Saiyadali weds Shahana", "kn": "ವಸೀಂ ಮತ್ತು ಅಫ್ರೀನ್, ಸೈಯದಲಿ ಮತ್ತು ಶಹನಾ ಅವರ ವಿವಾಹ"}};
+      var D = {"c_sub": {"en": "Reception", "kn": "ಆರತಕ್ಷತೆ"}, "c_title": {"en": "A Beautiful Beginning", "kn": "ಸುಂದರ ಆರಂಭ"}, "c_open": {"en": "Open invitation", "kn": "ಆಮಂತ್ರಣ ತೆರೆಯಿರಿ"}, "h_sub": {"en": "Reception invitation", "kn": "ಆರತಕ್ಷತೆ ಆಮಂತ್ರಣ"}, "bl_h": {"en": "With blessings", "kn": "ಆಶೀರ್ವಾದಗಳೊಂದಿಗೆ"}, "bl_p": {"en": "In the name of Allah, the Most Gracious, the Most Merciful. We joyfully invite you to share our happiness as we celebrate our Reception.", "kn": "ಅತ್ಯಂತ ಕರುಣಾಮಯಿ, ಅತ್ಯಂತ ದಯಾಳುವಾದ ಅಲ್ಲಾಹನ ಹೆಸರಿನಲ್ಲಿ. ನಮ್ಮ ಆರತಕ್ಷತೆಯನ್ನು ಆಚರಿಸುವ ಈ ಸಂತೋಷದಲ್ಲಿ ನೀವೂ ಪಾಲ್ಗೊಳ್ಳಬೇಕೆಂದು ನಾವು ಹರ್ಷದಿಂದ ಆಹ್ವಾನಿಸುತ್ತೇವೆ."}, "day_h": {"en": "The blessed day", "kn": "ಶುಭ ದಿನ"}, "sc_sub": {"en": "Scratch the gold to reveal the date", "kn": "ದಿನಾಂಕ ತಿಳಿಯಲು ಚಿನ್ನದ ಪದರವನ್ನು ಉಜ್ಜಿರಿ"}, "date": {"en": "Monday, 11 January 2027", "kn": "ಸೋಮವಾರ, 11 ಜನವರಿ 2027"}, "time": {"en": "11:00 AM", "kn": "ಬೆಳಿಗ್ಗೆ 11:00"}, "skip": {"en": "Reveal without scratching", "kn": "ಉಜ್ಜದೆ ತೋರಿಸಿ"}, "v1": {"en": "“And among His signs is that He created for you mates from among yourselves, that you may dwell in tranquillity with them, and He has put love and mercy between your hearts.”<b>Surah Ar-Rum 30:21</b>", "kn": "“ನೀವು ನೆಮ್ಮದಿ ಪಡೆಯುವಂತೆ ನಿಮ್ಮಿಂದಲೇ ನಿಮಗೆ ಸಂಗಾತಿಗಳನ್ನು ಸೃಷ್ಟಿಸಿದ್ದು ಮತ್ತು ನಿಮ್ಮ ಹೃದಯಗಳ ನಡುವೆ ಪ್ರೀತಿ ಹಾಗೂ ದಯೆಯನ್ನು ಇರಿಸಿದ್ದು ಅವನ ದೃಷ್ಟಾಂತಗಳಲ್ಲಿ ಒಂದಾಗಿದೆ.”<b>ಸೂರಾ ಅರ್-ರೂಮ್ 30:21</b>"}, "ven_h": {"en": "Venue", "kn": "ಸ್ಥಳ"}, "ven1": {"en": "Hanchinal", "kn": "ಹಂಚಿನಾಳ"}, "ven2": {"en": "Savadatti", "kn": "ಸವದತ್ತಿ"}, "map": {"en": "View on map", "kn": "ನಕ್ಷೆಯಲ್ಲಿ ನೋಡಿ"}, "pre_h": {"en": "Pre-wedding events", "kn": "ವಿವಾಹ ಪೂರ್ವ ಕಾರ್ಯಕ್ರಮಗಳು"}, "mehendi": {"en": "Mehendi ceremony", "kn": "ಮೆಹಂದಿ ಕಾರ್ಯಕ್ರಮ"}, "groom_res": {"en": "Groom’s residence", "kn": "ವರನ ನಿವಾಸ"}, "t_meh": {"en": "07 Jan<br>6:00 PM", "kn": "07 ಜನವರಿ<br>ಸಂಜೆ 6:00"}, "haldi": {"en": "Haldi", "kn": "ಹಳದಿ (ಹಲ್ದಿ)"}, "t_hal": {"en": "08 Jan<br>10:00 PM", "kn": "08 ಜನವರಿ<br>ರಾತ್ರಿ 10:00"}, "we_h": {"en": "Wedding events", "kn": "ವಿವಾಹ ಕಾರ್ಯಕ್ರಮಗಳು"}, "we1": {"en": "Waseem <span class=\"wd\">weds</span> Afreen", "kn": "ವಸೀಂ <span class=\"wd\">ಮತ್ತು</span> ಅಫ್ರೀನ್"}, "t_we1": {"en": "09 Jan<br>12:00 PM", "kn": "09 ಜನವರಿ<br>ಮಧ್ಯಾಹ್ನ 12:00"}, "we2": {"en": "Saiyadali <span class=\"wd\">weds</span> Shahana", "kn": "ಸೈಯದಲಿ <span class=\"wd\">ಮತ್ತು</span> ಶಹನಾ"}, "t_we2": {"en": "10 Jan<br>12:00 PM", "kn": "10 ಜನವರಿ<br>ಮಧ್ಯಾಹ್ನ 12:00"}, "pr_h": {"en": "Program on Reception", "kn": "ಆರತಕ್ಷತೆ ಕಾರ್ಯಕ್ರಮ"}, "pt1": {"en": "10:00 AM", "kn": "ಬೆಳಿಗ್ಗೆ 10:00"}, "pt2": {"en": "11:00 AM", "kn": "ಬೆಳಿಗ್ಗೆ 11:00"}, "pt3": {"en": "12:30 PM", "kn": "ಮಧ್ಯಾಹ್ನ 12:30"}, "pg1": {"en": "Guest welcome", "kn": "ಅತಿಥಿಗಳ ಸ್ವಾಗತ"}, "pg2": {"en": "Reception ceremony", "kn": "ಆರತಕ್ಷತೆ ಸಮಾರಂಭ"}, "pg3": {"en": "Dawat (Lunch)", "kn": "ದಾವತ್ (ಮಧ್ಯಾಹ್ನದ ಊಟ)"}, "rsvp_h": {"en": "Will you join us?", "kn": "ನೀವು ನಮ್ಮೊಂದಿಗೆ ಬರುವಿರಾ?"}, "rsvp_b": {"en": "Insha’Allah — attending", "kn": "ಇನ್‌ಶಾ ಅಲ್ಲಾಹ್ — ಬರುತ್ತೇನೆ"}, "help_h": {"en": "Need help?", "kn": "ಸಹಾಯ ಬೇಕೇ?"}, "help_sub": {"en": "Call us for travel help or venue details", "kn": "ಪ್ರಯಾಣ ಸಹಾಯ ಅಥವಾ ಸ್ಥಳದ ಮಾಹಿತಿಗಾಗಿ ನಮಗೆ ಕರೆ ಮಾಡಿ"}, "travel": {"en": "Travel help", "kn": "ಪ್ರಯಾಣ ಸಹಾಯ"}, "venue_d": {"en": "Venue details", "kn": "ಸ್ಥಳದ ವಿವರ"}, "contact": {"en": "Contact name", "kn": "ಸಂಪರ್ಕ ಹೆಸರು"}, "v2": {"en": "“Our Lord, grant us from among our spouses and offspring comfort to our eyes and make us an example for the righteous.”<b>Surah Al-Furqan 25:74</b>", "kn": "“ನಮ್ಮ ಪ್ರಭುವೇ, ನಮ್ಮ ಸಂಗಾತಿಗಳಿಂದಲೂ ಸಂತತಿಗಳಿಂದಲೂ ನಮಗೆ ಕಣ್ಣಿಗೆ ತಂಪನ್ನು ಕರುಣಿಸು ಮತ್ತು ನಮ್ಮನ್ನು ಭಯಭಕ್ತಿಯುಳ್ಳವರಿಗೆ ಮಾದರಿಯನ್ನಾಗಿ ಮಾಡು.”<b>ಸೂರಾ ಅಲ್-ಫುರ್ಕಾನ್ 25:74</b>"}, "f1": {"en": "Waseem <span class=\"wd\">weds</span> Afreen", "kn": "ವಸೀಂ <span class=\"wd\">ಮತ್ತು</span> ಅಫ್ರೀನ್"}, "f2": {"en": "Saiyadali <span class=\"wd\">weds</span> Shahana", "kn": "ಸೈಯದಲಿ <span class=\"wd\">ಮತ್ತು</span> ಶಹನಾ"}, "fin": {"en": "May Allah bless these unions with love, mercy and tranquillity. Ameen.", "kn": "ಅಲ್ಲಾಹನು ಈ ವಿವಾಹ ಬಂಧಗಳನ್ನು ಪ್ರೀತಿ, ಕರುಣೆ ಮತ್ತು ಶಾಂತಿಯಿಂದ ಆಶೀರ್ವದಿಸಲಿ. ಆಮೀನ್."}, "scratch_here": {"en": "Scratch here", "kn": "ಇಲ್ಲಿ ಉಜ್ಜಿ"}, "name_ph": {"en": "Your name", "kn": "ನಿಮ್ಮ ಹೆಸರು"}, "thanks": {"en": "Thank you", "kn": "ಧನ್ಯವಾದಗಳು"}, "reply": {"en": "Your reply: Insha’Allah, attending.", "kn": "ನಿಮ್ಮ ಉತ್ತರ: ಇನ್‌ಶಾ ಅಲ್ಲಾಹ್, ಬರುತ್ತೇನೆ."}, "cd_d": {"en": "days", "kn": "ದಿನ"}, "cd_h": {"en": "hrs", "kn": "ಗಂ"}, "cd_m": {"en": "min", "kn": "ನಿಮಿ"}, "cd_s": {"en": "sec", "kn": "ಸೆ"}, "nm1": {"en": "Waseem <span class=\"wd\">weds</span> Afreen", "kn": "ವಸೀಂ <span class=\"wd\">ಮತ್ತು</span> ಅಫ್ರೀನ್"}, "nm2": {"en": "Saiyadali <span class=\"wd\">weds</span> Shahana", "kn": "ಸೈಯದಲಿ <span class=\"wd\">ಮತ್ತು</span> ಶಹನಾ"}, "sr_h1": {"en": "Waseem weds Afreen and Saiyadali weds Shahana", "kn": "ವಸೀಂ ಮತ್ತು ಅಫ್ರೀನ್, ಸೈಯದಲಿ ಮತ್ತು ಶಹನಾ ಅವರ ವಿವಾಹ"}};
       var cur = 'en';
       function t(k) { return D[k][cur] }
       window.__t = t;
